@@ -21,7 +21,7 @@ services:
     links:
       - mysql:db
       - mailhog:mailhog
-      - blackfire:blackfire
+#      - blackfire:blackfire
     environment:
       LOCAL_USER_ID: ${LOCAL_USER_ID}
       XDEBUG_CONFIG: remote_connect_back=${XDEBUG_REMOTE_CONNECT_BACK} idekey=${XDEBUG_IDEKEY} remote_host=${XDEBUG_REMOTE_HOST} remote_port=${XDEBUG_REMOTE_PORT}
@@ -39,12 +39,12 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  blackfire:
-    image: blackfire/blackfire:1.15.0
-    network_mode: bridge
-    environment:
-      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
-      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
+#  blackfire:
+#    image: blackfire/blackfire:1.15.0
+#    network_mode: bridge
+#    environment:
+#      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+#      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.7.7-1
     network_mode: bridge
