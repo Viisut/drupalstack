@@ -1,4 +1,4 @@
-FROM php:7.1.13-fpm
+FROM php:7.4.10-fpm
 
 RUN echo "Europe/Tallinn" > /etc/timezone \
   && dpkg-reconfigure -f noninteractive tzdata
@@ -9,7 +9,7 @@ RUN apt-get update \
      cron \
      libfreetype6-dev \
      libjpeg62-turbo-dev \
-     libpng12-dev \
+     libpng-dev \
      libssl-dev \
      libxml2-dev \
      libpq-dev \
@@ -23,9 +23,11 @@ RUN apt-get update \
      libc-client-dev \
      libkrb5-dev \
      libmemcached-dev \
+     libonig-dev \
      zlib1g-dev \
-     ssmtp \
-     mysql-client \
+     libzip-dev \
+     msmtp \
+     mariadb-client \
      wget \
      unzip \
      imagemagick \
@@ -34,8 +36,8 @@ RUN apt-get update \
      git \
   && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir==/usr/include/ \
-  && docker-php-ext-install gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install -j$(nproc) gd
 
 RUN docker-php-ext-configure exif \
   && docker-php-ext-install exif
@@ -70,11 +72,11 @@ RUN docker-php-ext-configure pdo \
 RUN docker-php-ext-configure curl \
   && docker-php-ext-install curl
 
-RUN docker-php-ext-configure hash \
-  && docker-php-ext-install hash
+#RUN docker-php-ext-configure hash \
+#  && docker-php-ext-install hash
 
-RUN docker-php-ext-configure mcrypt \
-  && docker-php-ext-install mcrypt
+#RUN docker-php-ext-configure mcrypt \
+#  && docker-php-ext-install mcrypt
 
 RUN docker-php-ext-configure iconv \
   && docker-php-ext-install iconv
@@ -112,10 +114,10 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
   && docker-php-ext-configure ldap \
   && docker-php-ext-install ldap
 
-RUN pear install pecl/xdebug-2.5.5 \
+RUN pear install pecl/xdebug-2.9.7 \
   && docker-php-ext-enable xdebug
 
-RUN pear install pecl/memcached-3.0.3 \
+RUN pear install pecl/memcached-3.1.5 \
   && docker-php-ext-enable memcached
 
 RUN pear install pecl/redis-3.1.3 \
